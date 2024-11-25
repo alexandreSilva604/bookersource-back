@@ -12,12 +12,13 @@ public class Hotel {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private int zipCode;
-    private String name, city, state, address;
+    private String name, country, state, city, address;
 
-    public Hotel(String name, String city, String state, String address, int zipCode) {
+    public Hotel(String name, String country, String state, String city, String address, int zipCode) {
         this.name = name;
-        this.city = city;
+        this.country = country;
         this.state = state;
+        this.city = city;
         this.address = address;
         this.zipCode = zipCode;
     }
@@ -30,12 +31,16 @@ public class Hotel {
         return this.name;
     }
 
-    public String getCity() {
-        return this.city;
+    public String getCountry() {
+        return this.country;
     }
 
     public String getState() {
         return this.state;
+    }
+
+    public String getCity() {
+        return this.city;
     }
 
     public String getAddress() {
