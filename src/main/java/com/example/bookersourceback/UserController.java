@@ -12,6 +12,7 @@ public class UserController {
 
     @PostMapping(path="/add")
     public @ResponseBody String addNewUser(@RequestParam String name,
+                                            @RequestParam String dateOfBirth,
                                             @RequestParam String email,
                                             @RequestParam String password,
                                             @RequestParam String country,
@@ -21,7 +22,7 @@ public class UserController {
                                             @RequestParam int zipCode,
                                             @RequestParam boolean isAdministrator) {
 
-        User newUser = new User(name, email, password, country, state,
+        User newUser = new User(name, dateOfBirth, email, password, country, state,
                 city, address, zipCode, isAdministrator);
         userRepository.save(newUser);
 

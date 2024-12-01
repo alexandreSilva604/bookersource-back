@@ -12,14 +12,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private int zipCode;
-    private String name, email, password, country, state, city, address;
+    private String name, dateOfBirth, email, password, country, state, city, address;
     private boolean isAdministrator;
 
-    public User(String name, String email, String password,
+    public User(String name,String dateOfBirth, String email, String password,
                 String country, String state, String city, String address,
                 int zipCode, boolean isAdministrator) {
 
         this.name = name;
+        this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.password = password;
         this.country = country;
@@ -30,34 +31,38 @@ public class User {
     }
 
     public String getName() {
-        return name;
+        return this.name;
+    }
+
+    public String getdateOfBirth() {
+        return this.dateOfBirth;
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public String getCountry() {
-        return country;
+        return this.country;
     }
 
     public String getCity() {
-        return city;
+        return this.city;
     }
 
     public String getAddress() {
-        return address;
+        return this.address;
     }
 
     public int getZipCode() {
-        return zipCode;
+        return this.zipCode;
     }
 
     public boolean isAdministrator() {
-        return isAdministrator;
+        return this.isAdministrator;
     }
 }
