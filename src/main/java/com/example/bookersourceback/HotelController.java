@@ -12,12 +12,13 @@ public class HotelController {
 
     @PostMapping(path="/add")
     public @ResponseBody String addNewHotel(@RequestParam String name,
-                                            @RequestParam String city,
+                                            @RequestParam String country,
                                             @RequestParam String state,
+                                            @RequestParam String city,
                                             @RequestParam String address,
                                             @RequestParam int zipCode) {
 
-        Hotel newHotel = new Hotel(name, city, state, address, zipCode);
+        Hotel newHotel = new Hotel(name, country, state, city, address, zipCode);
         hotelRepository.save(newHotel);
 
         return "Added to repository";
