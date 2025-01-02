@@ -1,8 +1,12 @@
 package com.example.bookersourceback;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping(path="/users")
@@ -10,23 +14,31 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @PostMapping(path="/add")
-    public @ResponseBody String addNewUser(@RequestParam String name,
-                                            @RequestParam String dateOfBirth,
-                                            @RequestParam String email,
-                                            @RequestParam String password,
-                                            @RequestParam String country,
-                                            @RequestParam String state,
-                                            @RequestParam String city,
-                                            @RequestParam String address,
-                                            @RequestParam int zipCode,
-                                            @RequestParam boolean isAdministrator) {
+    @RequestMapping(path="/add",
+            method=RequestMethod.POST,
+            produces= MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody Map<String, String> addNewUser(@RequestBody Map<String, String> userData) {
 
-        User newUser = new User(name, dateOfBirth, email, password, country, state,
-                city, address, zipCode, isAdministrator);
-        userRepository.save(newUser);
+        HashMap<String, String> message = new HashMap<>();
+        System.out.println("Received data:\n" + userData);
 
-        return "Added to repository";
+        try {
+            User newUser = new User(0, userData.get("name"), userData.get("dateOfBirth"),
+                    userData.get("email"), userData.get("password"), userData.get("country"),
+                    userData.get("state"), userData.get("city"), userData.get("address"),
+                    userData.get("isAdministrator").equals("true"));
+            userRepository.save(newUser);
+
+            message.put("status", "200");
+            message.put("message", "User registered successfully.");
+
+            return message;
+        }
+        catch (Exception e) {
+            message.put("status", "500");
+            message.put("message", e.getMessage());
+            return message;
+        }
     }
 
     @GetMapping(path="/all")

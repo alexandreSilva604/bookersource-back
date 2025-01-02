@@ -20,7 +20,6 @@ public class Hotel {
         this.state = state;
         this.city = city;
         this.address = address;
-        this.zipCode = zipCode;
     }
 
     public Integer getId() {

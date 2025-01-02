@@ -1,33 +1,59 @@
 package com.example.bookersourceback;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name="users")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-    private int zipCode;
-    private String name, dateOfBirth, email, password, country, state, city, address;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private long id;
+
+    @Column(name="user_name")
+    private String name;
+
+    @Column(name="user_birthday")
+    private String dateOfBirth;
+
+    @Column(name="user_email")
+    private String email;
+
+    @Column(name="user_password")
+    private String password;
+
+    @Column(name="user_country")
+    private String country;
+
+    @Column(name="user_state")
+    private String state;
+
+    @Column(name="user_city")
+    private String city;
+
+    @Column(name="user_address")
+    private String address;
+
+    @Column(name="user_is_administrator")
     private boolean isAdministrator;
 
-    public User(String name,String dateOfBirth, String email, String password,
-                String country, String state, String city, String address,
-                int zipCode, boolean isAdministrator) {
+    public User(long id, String name,String dateOfBirth, String email, String password,
+                String country, String state, String city, String address, boolean isAdministrator) {
 
+        this.id = id;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.password = password;
         this.country = country;
+        this.state = state;
         this.city = city;
         this.address = address;
-        this.zipCode = zipCode;
         this.isAdministrator = isAdministrator;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getName() {
@@ -50,16 +76,16 @@ public class User {
         return this.country;
     }
 
+    public String getState() {
+        return state;
+    }
+
     public String getCity() {
         return this.city;
     }
 
     public String getAddress() {
         return this.address;
-    }
-
-    public int getZipCode() {
-        return this.zipCode;
     }
 
     public boolean isAdministrator() {
