@@ -3,7 +3,7 @@ package com.example.bookersourceback;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="users")
+@Table(name="users", schema="mydatabase")
 public class User {
 
     @Id
