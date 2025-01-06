@@ -8,6 +8,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name="user_id")
     private long id;
 
     @Column(name="user_name")
@@ -37,7 +38,9 @@ public class User {
     @Column(name="user_is_administrator")
     private boolean isAdministrator;
 
-    public User(long id, String name,String dateOfBirth, String email, String password,
+    public User() {}
+
+    public User(long id, String name, String dateOfBirth, String email, String password,
                 String country, String state, String city, String address, boolean isAdministrator) {
 
         this.id = id;

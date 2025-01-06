@@ -44,30 +44,23 @@ public class UserController {
     @RequestMapping(path="/authenticate",
             method=RequestMethod.POST,
             produces=MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody Map<String, String> authenticateUser
+    public @ResponseBody Map<String, User> authenticateUser
             (@RequestBody Map<String, String> userInfo) {
 
-        HashMap<String, String> message = new HashMap<>();
+        HashMap<String, User> message = new HashMap<>();
         System.out.println("Received data:\n" + userInfo);
 
         try {
-            long rowCount = userRepository.countByEmailAndPassword(userInfo.get("email"),
+            User foundUser = userRepository.findUserByEmailAndPassword(userInfo.get("email"),
                     userInfo.get("password"));
 
-            if (rowCount > 0) {
-                message.put("status", "200");
-                message.put("message", "User was found");
-            } else {
-                message.put("status", "404");
-                message.put("message", "User was not found");
-            }
+            message.put("user", foundUser);
 
             return message;
         }
         catch(Exception e) {
-            message.put("status", "500");
-            message.put("message", e.getMessage());
-            return message;
+            System.out.println(e.getMessage());
+            return null;
         }
     }
 
