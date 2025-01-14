@@ -1,7 +1,9 @@
 package com.example.bookersourceback;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,7 +47,7 @@ public class UserController {
             method=RequestMethod.POST,
             produces=MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody Map<String, User> authenticateUser
-            (@RequestBody Map<String, String> userInfo) {
+            (@RequestBody Map<String, String> userInfo, HttpServletResponse response) {
 
         HashMap<String, User> message = new HashMap<>();
         System.out.println("Received data:\n" + userInfo);
@@ -56,11 +58,50 @@ public class UserController {
 
             message.put("user", foundUser);
 
+            // NOT WORKING (?)
+            if (foundUser != null) {
+                ResponseCookie sessionCookie =
+                        ResponseCookie.from("userStatus", "logged")
+                                .httpOnly(true)
+                                .secure(true)
+                                .path("/")
+                                .build();
+
+                response.addHeader("Set-Cookie", sessionCookie.toString());
+            }
+
             return message;
         }
         catch(Exception e) {
             System.out.println(e.getMessage());
             return null;
+        }
+    }
+
+    @GetMapping(path = "/logout")
+    public @ResponseBody HashMap<String, String> userLogout(HttpServletResponse response) {
+
+        HashMap<String, String> statusMessage = new HashMap<>();
+
+        try {
+
+            ResponseCookie logoutCookie =
+                    ResponseCookie.from("userStatus", "loggedOut")
+                            .httpOnly(true)
+                            .secure(true)
+                            .maxAge(0)
+                            .path("/")
+                            .build();
+
+            response.addHeader("Set-Cookie", logoutCookie.toString());
+
+            statusMessage.put("message", "User has logged out.");
+
+            return statusMessage;
+        }
+        catch(Exception e) {
+            statusMessage.put("message", e.getMessage());
+            return statusMessage;
         }
     }
 
