@@ -35,13 +35,17 @@ public class User {
     @Column(name="user_address")
     private String address;
 
+    @Column(name="user_phone_number")
+    private String phoneNumber;
+
     @Column(name="user_is_administrator")
     private boolean isAdministrator;
 
     public User() {}
 
     public User(long id, String name, String dateOfBirth, String email, String password,
-                String country, String state, String city, String address, boolean isAdministrator) {
+                String country, String state, String city, String address,
+                String phoneNumber, boolean isAdministrator) {
 
         this.id = id;
         this.name = name;
@@ -52,6 +56,7 @@ public class User {
         this.state = state;
         this.city = city;
         this.address = address;
+        this.phoneNumber = phoneNumber;
         this.isAdministrator = isAdministrator;
     }
 
@@ -89,6 +94,10 @@ public class User {
 
     public String getAddress() {
         return this.address;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
     public boolean isAdministrator() {

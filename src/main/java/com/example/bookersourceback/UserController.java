@@ -1,5 +1,6 @@
 package com.example.bookersourceback;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -28,7 +29,8 @@ public class UserController {
             User newUser = new User(0, userData.get("name"), userData.get("dateOfBirth"),
                     userData.get("email"), userData.get("password"), userData.get("country"),
                     userData.get("state"), userData.get("city"), userData.get("address"),
-                    userData.get("isAdministrator").equals("true"));
+                    userData.get("phoneNumber"), userData.get("isAdministrator").equals("true"));
+
             userRepository.save(newUser);
 
             message.put("status", "200");
@@ -50,24 +52,23 @@ public class UserController {
             (@RequestBody Map<String, String> userInfo, HttpServletResponse response) {
 
         HashMap<String, User> message = new HashMap<>();
-        System.out.println("Received data:\n" + userInfo);
 
         try {
             User foundUser = userRepository.findUserByEmailAndPassword(userInfo.get("email"),
                     userInfo.get("password"));
 
-            message.put("user", foundUser);
-
             // NOT WORKING (?)
             if (foundUser != null) {
-                ResponseCookie sessionCookie =
-                        ResponseCookie.from("userStatus", "logged")
-                                .httpOnly(true)
-                                .secure(true)
-                                .path("/")
-                                .build();
+                Cookie sessionCookie = new Cookie("userStatus", "logged");
 
-                response.addHeader("Set-Cookie", sessionCookie.toString());
+                sessionCookie.setHttpOnly(true);
+                sessionCookie.setSecure(false);
+                sessionCookie.setPath("/");
+                sessionCookie.setDomain("localhost");
+
+                response.addCookie(sessionCookie);
+
+                message.put("user", foundUser);
             }
 
             return message;
@@ -85,15 +86,15 @@ public class UserController {
 
         try {
 
-            ResponseCookie logoutCookie =
-                    ResponseCookie.from("userStatus", "loggedOut")
-                            .httpOnly(true)
-                            .secure(true)
-                            .maxAge(0)
-                            .path("/")
-                            .build();
+            Cookie logoutCookie = new Cookie("userStatus", "loggedOut");
 
-            response.addHeader("Set-Cookie", logoutCookie.toString());
+            logoutCookie.setMaxAge(0);
+            logoutCookie.setHttpOnly(true);
+            logoutCookie.setSecure(false);
+            logoutCookie.setPath("/");
+            logoutCookie.setDomain("localhost");
+
+            response.addCookie(logoutCookie);
 
             statusMessage.put("message", "User has logged out.");
 
