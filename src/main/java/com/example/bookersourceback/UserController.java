@@ -4,12 +4,13 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static java.lang.Long.parseLong;
 
 @Controller
 @RequestMapping(path="/users")
@@ -40,6 +41,30 @@ public class UserController {
         }
         catch (Exception e) {
             message.put("status", "500");
+            message.put("message", e.getMessage());
+            return message;
+        }
+    }
+
+    @RequestMapping(path="/update",
+            method=RequestMethod.PUT,
+            produces= MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody Map<String, String> updateUser(@RequestBody Map<String, String> userData) {
+
+        HashMap<String, String> message = new HashMap<>();
+
+        try {
+            User userToUpdate = new User(parseLong(userData.get("id")), userData.get("name"), userData.get("dateOfBirth"),
+                    userData.get("email"), userData.get("password"), userData.get("country"),
+                    userData.get("state"), userData.get("city"), userData.get("address"),
+                    userData.get("phoneNumber"), userData.get("isAdministrator").equals("true"));
+
+            userRepository.save(userToUpdate);
+
+            message.put("message", "User has been updated.");
+            return message;
+        }
+        catch(Exception e) {
             message.put("message", e.getMessage());
             return message;
         }
