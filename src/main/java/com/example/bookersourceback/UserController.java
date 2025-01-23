@@ -49,9 +49,9 @@ public class UserController {
     @RequestMapping(path="/update",
             method=RequestMethod.PUT,
             produces= MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody Map<String, String> updateUser(@RequestBody Map<String, String> userData) {
+    public @ResponseBody HashMap<String, User> updateUser(@RequestBody Map<String, String> userData) {
 
-        HashMap<String, String> message = new HashMap<>();
+        HashMap<String, User> message = new HashMap<>();
 
         try {
             User userToUpdate = new User(parseLong(userData.get("id")), userData.get("name"), userData.get("dateOfBirth"),
@@ -61,11 +61,12 @@ public class UserController {
 
             userRepository.save(userToUpdate);
 
-            message.put("message", "User has been updated.");
+            message.put("user", userRepository.findUserByEmailAndPassword(userData.get("email"), userData.get("password")));
             return message;
         }
         catch(Exception e) {
-            message.put("message", e.getMessage());
+            System.out.println(e.getMessage());
+            message.put("user", null);
             return message;
         }
     }
