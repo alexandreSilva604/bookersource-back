@@ -24,7 +24,6 @@ public class UserController {
     public @ResponseBody Map<String, String> addNewUser(@RequestBody Map<String, String> userData) {
 
         HashMap<String, String> message = new HashMap<>();
-        System.out.println("Received data:\n" + userData);
 
         try {
             User newUser = new User(0, userData.get("name"), userData.get("dateOfBirth"),

@@ -29,7 +29,8 @@ public class Hotel {
     @Column(name="hotel_admin_id")
     private long adminId;
 
-    public Hotel(String name, String country, String state, String city, String address, long adminId) {
+    public Hotel(long id, String name, String country, String state, String city, String address, long adminId) {
+        this.id = id;
         this.name = name;
         this.country = country;
         this.state = state;
