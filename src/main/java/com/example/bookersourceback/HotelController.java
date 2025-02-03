@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +36,23 @@ public class HotelController {
             message.put("message", e.getMessage());
 
             return message;
+        }
+    }
+
+    @GetMapping(path="/userHotels/{adminId}")
+    public @ResponseBody Map<String, ArrayList<Hotel>> findHotelsByUser(@PathVariable String adminId) {
+
+        HashMap<String, ArrayList<Hotel>> foundHotels = new HashMap<>();
+
+        try {
+            foundHotels.put("hotels", hotelRepository.findHotelsByUserId(adminId));
+
+            return foundHotels;
+        }
+        catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+
+            return null;
         }
     }
 
