@@ -9,4 +9,7 @@ public interface HotelRepository extends CrudRepository<Hotel, Integer> {
 
     @Query(value="SELECT h FROM Hotel h WHERE h.adminId=:adminId")
     ArrayList<Hotel> findHotelsByUserId(String adminId);
+
+    @Query(value="SELECT h FROM Hotel h WHERE h.id=:hotelId")
+    Hotel findHotel(String hotelId);
 }

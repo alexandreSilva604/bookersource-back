@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping(path="/hotels")
@@ -51,6 +52,24 @@ public class HotelController {
         }
         catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
+
+            return null;
+        }
+    }
+
+    @GetMapping(path="/findHotel/{hotelId}")
+    public @ResponseBody Map<String, Hotel> findHotel(@PathVariable String hotelId) {
+
+        try {
+            Hotel foundHotel = hotelRepository.findHotel(hotelId);
+
+            Map<String, Hotel> hotelReturn = new HashMap<>();
+            hotelReturn.put("hotel", foundHotel);
+
+            return hotelReturn;
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
 
             return null;
         }
