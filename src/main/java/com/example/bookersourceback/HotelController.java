@@ -29,15 +29,12 @@ public class HotelController {
             hotelRepository.save(newHotel);
 
             message.put("message", "Hotel registered successfully!");
-
-            return message;
         }
         catch(Exception e) {
-
             message.put("message", e.getMessage());
-
-            return message;
         }
+
+        return message;
     }
 
     @GetMapping(path="/userHotels/{adminId}")

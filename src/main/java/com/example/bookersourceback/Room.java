@@ -27,12 +27,15 @@ public class Room {
     private int floor;
 
     @Column(name="room_hotel_id")
-    private int hotelId;
+    private long hotelId;
+
+    @Column(name="room_image_path")
+    private String imagePath;
 
     public Room() {}
 
     public Room(long id, int number, double pricePerDay, int peopleCapacity, int quantityBeds,
-                int floor, int hotelId) {
+                int floor, long hotelId, String imagePath) {
 
         this.id = id;
         this.number = number;
@@ -41,6 +44,7 @@ public class Room {
         this.quantityBeds = quantityBeds;
         this.floor = floor;
         this.hotelId = hotelId;
+        this.imagePath = imagePath;
     }
 
     public long getId() {
@@ -67,7 +71,11 @@ public class Room {
         return floor;
     }
 
-    public int getHotelId() {
+    public long getHotelId() {
         return hotelId;
+    }
+
+    public String getImagePath() {
+        return imagePath;
     }
 }
